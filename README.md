@@ -4,13 +4,15 @@
 
 ## Installing **MeowFace Tracking Module** for **VRCFaceTracking**.
 
-**VRCFaceTracking is required to use MeowFace Tracking Module.**
+[Latest Release](https://github.com/regzo2/VRCFaceTracking-MeowFace/releases)
 
 * Installer
-  * Download and run the installer to install **MeowFace Tracking Module** into the **VRCFaceTracking** module directory directly.
+  * [Download](https://github.com/regzo2/VRCFaceTracking-MeowFace/releases) and run the installer to install **MeowFace Tracking Module** into the **VRCFaceTracking** module directory directly.
   
 * Manual
   * Include the supplied **.dll** release in a `CustomLibs` folder next to the **VRCFaceTracking** executable or in `%appdata%/VRCFaceTracking/CustomLibs` for a global install. 
+  
+**VRCFaceTracking is required to use MeowFace Tracking Module.**
   
 ## Using MeowFace with VRCFaceTracking
 
@@ -27,14 +29,6 @@ Make sure that you have **MeowFace**'s *IP* and *port* configured as specified b
 > MeowFace is not tracking as expected.
 
 MeowFace is not all too perfect at tracking your face... however: some of the tracking may not track as expected when converted for use into VRCFaceTracking's parameter system. Feel free to make an issue if MeowFace doesn't track as expected!
-=======
-# VRCFaceTracking Modules
-> All external tracking modules that I have developed and released for VRCFaceTracking
-
-## Modules
-The following VRCFaceTracking modules can be found in their respective [branches](https://github.com/regzo2/VRCFaceTracking-Modules/branches)
-
-* [MeowFace Tracking Module](https://github.com/regzo2/VRCFaceTracking-Modules/tree/meowface)
   
 ## Licenses / Distribution
 
