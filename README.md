@@ -27,3 +27,18 @@ Make sure that you have **MeowFace**'s *IP* and *port* configured as specified b
 > MeowFace is not tracking as expected.
 
 MeowFace is not all too perfect at tracking your face... however: some of the tracking may not track as expected when converted for use into VRCFaceTracking's parameter system. Feel free to make an issue if MeowFace doesn't track as expected!
+=======
+# VRCFaceTracking Modules
+> All external tracking modules that I have developed and released for VRCFaceTracking
+
+## Modules
+The following VRCFaceTracking modules can be found in their respective [branches](https://github.com/regzo2/VRCFaceTracking-Modules/branches)
+
+* [MeowFace Tracking Module](https://github.com/regzo2/VRCFaceTracking-Modules/tree/meowface)
+  
+## Licenses / Distribution
+
+**All source and release files fall under the [Apache-2.0 License](https://github.com/regzo2/VRCFaceTracking-Modules/blob/master/LICENSE.txt)**.
+
+## Credits
+- [Ben](https://github.com/benaclejames/) for VRCFaceTracking!
