@@ -125,8 +125,8 @@ namespace MeowFaceExtTrackingInterface
             shapes[(int)UnifiedExpressions.LipPuckerRight].Weight = data.BlendShapes[(int)MeowShapeType.mouthPucker].v;
             shapes[(int)UnifiedExpressions.LipPuckerLeft].Weight = data.BlendShapes[(int)MeowShapeType.mouthPucker].v;
 
-            shapes[(int)UnifiedExpressions.NoseWrinkleRight].Weight = data.BlendShapes[(int)MeowShapeType.noseSneerRight].v;
-            shapes[(int)UnifiedExpressions.NoseWrinkleLeft].Weight = data.BlendShapes[(int)MeowShapeType.noseSneerLeft].v;
+            shapes[(int)UnifiedExpressions.NoseSneerRight].Weight = data.BlendShapes[(int)MeowShapeType.noseSneerRight].v;
+            shapes[(int)UnifiedExpressions.NoseSneerLeft].Weight = data.BlendShapes[(int)MeowShapeType.noseSneerLeft].v;
 
             shapes[(int)UnifiedExpressions.MouthSmileRight].Weight = data.BlendShapes[(int)MeowShapeType.mouthSmileRight].v;
             shapes[(int)UnifiedExpressions.MouthSmileLeft].Weight = data.BlendShapes[(int)MeowShapeType.mouthSmileLeft].v;
