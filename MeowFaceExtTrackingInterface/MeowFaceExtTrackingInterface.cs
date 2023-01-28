@@ -71,12 +71,12 @@ namespace MeowFaceExtTrackingInterface
             */
 
             // Data has wrong polarization
-            eye.Right.Gaze.x = -data.EyeRight.x * radianConst;
-            eye.Right.Gaze.y = data.EyeRight.y * radianConst;
+            eye.Right.Gaze.x = data.EyeRight.y * radianConst;
+            eye.Right.Gaze.y = -data.EyeRight.x * radianConst;
             eye.Right.Openness = 1.0f - data.BlendShapes[(int)MeowShapeType.eyeBlinkRight].v;
 
-            eye.Left.Gaze.x = -data.EyeLeft.x * radianConst;
-            eye.Left.Gaze.y = data.EyeLeft.y * radianConst;
+            eye.Left.Gaze.x = data.EyeLeft.y * radianConst;
+            eye.Left.Gaze.y = -data.EyeLeft.x * radianConst;
             eye.Left.Openness = 1.0f - data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v;
         }
 
