@@ -36,19 +36,19 @@ namespace MeowFaceExtTrackingInterface
         public override (bool eyeSuccess, bool expressionSuccess) Initialize(bool eyeAvailable, bool expressionAvailable)
         {
             client = new UdpClient(port);
+            client.Client.SendTimeout = 1000;
+            client.Client.ReceiveTimeout = 1000;
+
             Logger.Warning("Seeking MeowFace connection for 60s. Accepting data on " + GetLocalIPAddress() + ":" + port);
             for (int i = 60; i > 0; i--)
             {
                 try
                 {
-                    client.Client.SendTimeout = 1000;
-                    client.Client.ReceiveTimeout = 1000;
                     byte[] buffer = client.Receive(ref endPoint);
                     MeowFaceData data = new JavaScriptSerializer().Deserialize<MeowFaceData>(Encoding.ASCII.GetString(buffer));
                 }
                 catch (SocketException)
                 {
-                    Logger.Warning("Data not recieved. " + i + " attempts remaining.");
                     continue;
                 }
                 catch (ArgumentNullException)
@@ -196,7 +196,6 @@ namespace MeowFaceExtTrackingInterface
             }
             catch (SocketException)
             {
-                Logger.Warning("Connection lost, will attempt a reconnect in 15s");
                 Thread.Sleep(15000);
                 return;
             }
