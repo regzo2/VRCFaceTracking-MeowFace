@@ -18,7 +18,7 @@ namespace MeowFaceExtTrackingInterface
         private static (bool, bool) sendData = (false, false);
         private static readonly float radianConst = 0.0174533f;
 
-        public override (bool SupportsEye, bool SupportsExpressions) Supported => (true, true);
+        public override (bool SupportsEye, bool SupportsExpression) Supported => (true, true);
 
         public static string GetLocalIPAddress()
         {
