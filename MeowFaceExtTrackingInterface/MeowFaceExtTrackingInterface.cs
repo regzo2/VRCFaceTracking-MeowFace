@@ -65,12 +65,6 @@ namespace MeowFaceExtTrackingInterface
 
         private void UpdateEye(ref UnifiedEyeData eye, ref MeowFaceData data)
         {
-            /*
-            Logger.Msg("X" + data.EyeRight.x.ToString());
-            Logger.Msg("Y" + data.EyeRight.y.ToString());
-            Logger.Msg("z" + data.EyeRight.z.ToString());
-            */
-
             // Data has wrong polarization
             eye.Right.Gaze.x = data.EyeRight.y * radianConst;
             eye.Right.Gaze.y = -data.EyeRight.x * radianConst;
@@ -84,10 +78,6 @@ namespace MeowFaceExtTrackingInterface
             eye.Left.Openness = 1.0f - (float)Math.Min(1, data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v +
                 (Math.Pow(data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v, .33) * Math.Pow(data.BlendShapes[(int)MeowShapeType.eyeSquintLeft].v, 1.25)));
 
-            // ALVR simplified:
-            //eye.Left.Openness = 1.0f - (float)Math.Min(1, data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v * (1.0 - data.BlendShapes[(int)MeowShapeType.eyeWideLeft].v) +
-            //    (Math.Pow(data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v, .33) * Math.Pow(data.BlendShapes[(int)MeowShapeType.eyeSquintLeft].v, 1.25)));
-            
         }
         private void UpdateEyeExpressions(ref UnifiedExpressionShape[] shapes, ref MeowFaceData data)
         {
@@ -158,8 +148,11 @@ namespace MeowFaceExtTrackingInterface
             shapes[(int)UnifiedExpressions.CheekSquintRight].Weight = data.BlendShapes[(int)MeowShapeType.mouthSmileRight].v;
             shapes[(int)UnifiedExpressions.CheekSquintLeft].Weight = data.BlendShapes[(int)MeowShapeType.mouthSmileLeft].v;
 
-            shapes[(int)UnifiedExpressions.MouthStretchRight].Weight = data.BlendShapes[(int)MeowShapeType.mouthFrownRight].v;
-            shapes[(int)UnifiedExpressions.MouthStretchLeft].Weight = data.BlendShapes[(int)MeowShapeType.mouthFrownLeft].v;
+            shapes[(int)UnifiedExpressions.MouthDimpleRight].Weight = data.BlendShapes[(int)MeowShapeType.mouthSmileRight].v * 0.5f;
+            shapes[(int)UnifiedExpressions.MouthDimpleLeft].Weight = data.BlendShapes[(int)MeowShapeType.mouthSmileLeft].v * 0.5f;
+
+            shapes[(int)UnifiedExpressions.MouthStretchRight].Weight = data.BlendShapes[(int)MeowShapeType.mouthFrownRight].v * 0.5f;
+            shapes[(int)UnifiedExpressions.MouthStretchLeft].Weight = data.BlendShapes[(int)MeowShapeType.mouthFrownLeft].v * 0.5f;
         }
 
         public override Action GetUpdateThreadFunc()
@@ -188,11 +181,6 @@ namespace MeowFaceExtTrackingInterface
                 }
                 if (sendData.Item2)
                     UpdateExpressions(ref UnifiedTracking.Data.Shapes, ref data);
-
-                Logger.Msg("Eye Closed: " + data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v.ToString() + " Eye Squint: " + data.BlendShapes[(int)MeowShapeType.eyeSquintLeft].v.ToString() +
-                    "\nSquint+Closed: " + (data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v + data.BlendShapes[(int)MeowShapeType.eyeSquintLeft].v).ToString() +
-                    "\nSquint+Closed Comp: " + ((float)Math.Min(1, data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v +
-                (Math.Pow(data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v, .33) * Math.Pow(data.BlendShapes[(int)MeowShapeType.eyeSquintLeft].v, 1.25)))).ToString());
             }
             catch (SocketException)
             {
