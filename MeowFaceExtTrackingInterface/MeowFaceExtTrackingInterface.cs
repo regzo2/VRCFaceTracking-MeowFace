@@ -35,6 +35,8 @@ namespace MeowFaceExtTrackingInterface
 
         public override (bool eyeSuccess, bool expressionSuccess) Initialize(bool eyeAvailable, bool expressionAvailable)
         {
+            if (client != null)
+                client.Dispose();
             client = new UdpClient(port);
             client.Client.SendTimeout = 1000;
             client.Client.ReceiveTimeout = 1000;
@@ -46,6 +48,7 @@ namespace MeowFaceExtTrackingInterface
                 {
                     byte[] buffer = client.Receive(ref endPoint);
                     MeowFaceData data = new JavaScriptSerializer().Deserialize<MeowFaceData>(Encoding.ASCII.GetString(buffer));
+                    sendData = (eyeAvailable, expressionAvailable);
                 }
                 catch (SocketException)
                 {
@@ -56,11 +59,11 @@ namespace MeowFaceExtTrackingInterface
                     Logger.Warning("JSON data sent does not match expected structure.");
                     return (false, false);
                 }
-                sendData = (eyeAvailable, expressionAvailable);
-                return (eyeAvailable, expressionAvailable);
+
+                return sendData;
             }
 
-            return (eyeAvailable, expressionAvailable);
+            return sendData;
         }
 
         private void UpdateEye(ref UnifiedEyeData eye, ref MeowFaceData data)
@@ -192,6 +195,7 @@ namespace MeowFaceExtTrackingInterface
         public override void Teardown()
         {
             Logger.Msg("Closing UDP client...");
+            client.Close();
             client.Dispose();
         }
     }
