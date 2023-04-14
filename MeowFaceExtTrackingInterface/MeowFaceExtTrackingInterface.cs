@@ -1,22 +1,28 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.Json.Serialization;
 using System.Text;
 using System.Threading;
-using System.Web.Script.Serialization;
 using VRCFaceTracking;
 using VRCFaceTracking.Params;
+using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
 namespace MeowFaceExtTrackingInterface
 {
     public class MeowFaceOSCExtTrackingInterface : ExtTrackingModule
     {
         private static int port = 12345;
-        private static UdpClient client;
-        private static IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, port);
+        private static UdpClient client = new();
+        private static IPEndPoint endPoint = new(IPAddress.Any, port);
+
         private static (bool, bool) sendData = (false, false);
+
         private static readonly float radianConst = 0.0174533f;
+
+        private static MeowFaceData dataBuffer = new();
+        private static byte[] buffer = new byte[4096];
 
         public override (bool SupportsEye, bool SupportsExpression) Supported => (true, true);
 
@@ -35,19 +41,18 @@ namespace MeowFaceExtTrackingInterface
 
         public override (bool eyeSuccess, bool expressionSuccess) Initialize(bool eyeAvailable, bool expressionAvailable)
         {
-            if (client != null)
-                client.Dispose();
+            client?.Dispose();
             client = new UdpClient(port);
             client.Client.SendTimeout = 1000;
             client.Client.ReceiveTimeout = 1000;
 
-            Logger.Warning("Seeking MeowFace connection for 60s. Accepting data on " + GetLocalIPAddress() + ":" + port);
+            Logger.LogInformation("Seeking MeowFace connection for 60s. Accepting data on " + GetLocalIPAddress() + ":" + port);
             for (int i = 60; i > 0; i--)
             {
                 try
                 {
-                    byte[] buffer = client.Receive(ref endPoint);
-                    MeowFaceData data = new JavaScriptSerializer().Deserialize<MeowFaceData>(Encoding.ASCII.GetString(buffer));
+                    buffer = client.Receive(ref endPoint);
+                    dataBuffer = JsonSerializer.Deserialize<MeowFaceData>(buffer) ?? dataBuffer;
                     sendData = (eyeAvailable, expressionAvailable);
                 }
                 catch (SocketException)
@@ -56,7 +61,7 @@ namespace MeowFaceExtTrackingInterface
                 }
                 catch (ArgumentNullException)
                 {
-                    Logger.Warning("JSON data sent does not match expected structure.");
+                    Logger.LogWarning("JSON data sent does not match expected structure.");
                     return (false, false);
                 }
 
@@ -66,7 +71,7 @@ namespace MeowFaceExtTrackingInterface
             return sendData;
         }
 
-        private void UpdateEye(ref UnifiedEyeData eye, ref MeowFaceData data)
+        private static void UpdateEye(ref UnifiedEyeData eye, ref MeowFaceData data)
         {
             // Data has wrong polarization
             eye.Right.Gaze.x = data.EyeRight.y * radianConst;
@@ -80,9 +85,9 @@ namespace MeowFaceExtTrackingInterface
 
             eye.Left.Openness = 1.0f - (float)Math.Min(1, data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v +
                 (Math.Pow(data.BlendShapes[(int)MeowShapeType.eyeBlinkLeft].v, .33) * Math.Pow(data.BlendShapes[(int)MeowShapeType.eyeSquintLeft].v, 1.25)));
-
         }
-        private void UpdateEyeExpressions(ref UnifiedExpressionShape[] shapes, ref MeowFaceData data)
+
+        private static void UpdateEyeExpressions(ref UnifiedExpressionShape[] shapes, ref MeowFaceData data)
         {
             shapes[(int)UnifiedExpressions.BrowPinchLeft].Weight = data.BlendShapes[(int)MeowShapeType.browDownLeft].v;
             shapes[(int)UnifiedExpressions.BrowLowererLeft].Weight = data.BlendShapes[(int)MeowShapeType.browDownLeft].v;
@@ -99,7 +104,8 @@ namespace MeowFaceExtTrackingInterface
             shapes[(int)UnifiedExpressions.EyeWideRight].Weight = data.BlendShapes[(int)MeowShapeType.eyeWideRight].v;
             shapes[(int)UnifiedExpressions.EyeWideLeft].Weight = data.BlendShapes[(int)MeowShapeType.eyeWideLeft].v;
         }
-        private void UpdateExpressions(ref UnifiedExpressionShape[] shapes, ref MeowFaceData data)
+
+        private static void UpdateExpressions(ref UnifiedExpressionShape[] shapes, ref MeowFaceData data)
         {
             shapes[(int)UnifiedExpressions.JawOpen].Weight = data.BlendShapes[(int)MeowShapeType.jawOpen].v;
             shapes[(int)UnifiedExpressions.JawLeft].Weight = data.BlendShapes[(int)MeowShapeType.jawLeft].v;
@@ -158,32 +164,22 @@ namespace MeowFaceExtTrackingInterface
             shapes[(int)UnifiedExpressions.MouthStretchLeft].Weight = data.BlendShapes[(int)MeowShapeType.mouthFrownLeft].v * 0.5f;
         }
 
-        public override Action GetUpdateThreadFunc()
-        {
-            return () =>
-            {
-                while (true)
-                {
-                    Update();
-                    Thread.Sleep(10);
-                }
-            };
-        }
+        public override void Update() => UpdateTracking();
 
-        public void Update()
+        public static void UpdateTracking()
         {
             try
             {
-                byte[] buffer = client.Receive(ref endPoint);
-                MeowFaceData data = new JavaScriptSerializer().Deserialize<MeowFaceData>(Encoding.ASCII.GetString(buffer));
+                buffer = client.Receive(ref endPoint);
+                dataBuffer = JsonSerializer.Deserialize<MeowFaceData>(buffer) ?? dataBuffer;
 
                 if (sendData.Item1)
                 {
-                    UpdateEye(ref UnifiedTracking.Data.Eye, ref data);
-                    UpdateEyeExpressions(ref UnifiedTracking.Data.Shapes, ref data);
+                    UpdateEye(ref UnifiedTracking.Data.Eye, ref dataBuffer);
+                    UpdateEyeExpressions(ref UnifiedTracking.Data.Shapes, ref dataBuffer);
                 }
                 if (sendData.Item2)
-                    UpdateExpressions(ref UnifiedTracking.Data.Shapes, ref data);
+                    UpdateExpressions(ref UnifiedTracking.Data.Shapes, ref dataBuffer);
             }
             catch (SocketException)
             {
@@ -194,7 +190,7 @@ namespace MeowFaceExtTrackingInterface
 
         public override void Teardown()
         {
-            Logger.Msg("Closing UDP client...");
+            Logger.LogInformation("Closing UDP client...");
             client.Close();
             client.Dispose();
         }
