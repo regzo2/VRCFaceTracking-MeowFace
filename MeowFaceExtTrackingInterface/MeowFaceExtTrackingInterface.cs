@@ -1,13 +1,10 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
-using System.Text.Json.Serialization;
-using System.Text;
-using System.Threading;
-using VRCFaceTracking;
-using VRCFaceTracking.Params;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using VRCFaceTracking;
+using VRCFaceTracking.Core.Params.Data;
+using VRCFaceTracking.Core.Params.Expressions;
 
 namespace MeowFaceExtTrackingInterface
 {
@@ -41,6 +38,11 @@ namespace MeowFaceExtTrackingInterface
 
         public override (bool eyeSuccess, bool expressionSuccess) Initialize(bool eyeAvailable, bool expressionAvailable)
         {
+            ModuleInformation.Name = "MeowFace";
+
+            var stream = GetType().Assembly.GetManifestResourceStream("MeowFaceExtTrackingInterface.Assets.meowface-logo.png");
+            ModuleInformation.StaticImages = stream != null ? new List<Stream> { stream } : ModuleInformation.StaticImages;
+
             client?.Dispose();
             client = new UdpClient(port);
             client.Client.SendTimeout = 1000;
