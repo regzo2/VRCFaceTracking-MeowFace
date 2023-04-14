@@ -13,9 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="VRCFaceTracking.Core">
-      <HintPath>..\..\VRCFaceTracking\VRCFaceTracking.Core\bin\x64\Release\net6.0\VRCFaceTracking.Core.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\VRCFaceTracking\VRCFaceTracking.Core\VRCFaceTracking.Core.csproj" />
   </ItemGroup>
 
 </Project>
