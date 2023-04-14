@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MeowFaceExtTrackingInterface
 {
-    public class MeowFaceOSCExtTrackingInterface : ExtTrackingModule
+    public class MeowFaceExtTrackingInterface : ExtTrackingModule
     {
         private static int port = 12345;
         private static UdpClient client = new();
