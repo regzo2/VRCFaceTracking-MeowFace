@@ -3,7 +3,7 @@
   "AuthorName": "Mitchell Taylor",
   "DllFileName": "MeowFaceExtTrackingInterface.dll",
   "Downloads": 16,
-  "DownloadUrl": "https://github.com/regzo2/VRCFaceTracking-MeowFace/releases/download/vrcft-registry/SRanipalTrackingModule.zip",
+  "DownloadUrl": "https://github.com/regzo2/VRCFaceTracking-MeowFace/releases/download/vrcft-registry/MeowFaceExtTrackingInterface.zip",
   "LastUpdated": "2023-04-20T01:08:01Z",
   "ModuleDescription": "Use the MeowFace Android app with VRCFaceTracking!",
   "ModuleName": "MeowFace Tracking Module",
