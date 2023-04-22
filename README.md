@@ -6,8 +6,8 @@
 
 [Latest Release](https://github.com/regzo2/VRCFaceTracking-MeowFace/releases)
 
-* Installer
-  * [Download](https://github.com/regzo2/VRCFaceTracking-MeowFace/releases) and run the installer to install **MeowFace Tracking Module** into the **VRCFaceTracking** module directory directly.
+* VRCFaceTracking Module Registry
+  * Install **MeowFace Tracking Module** by looking it up in the **Module Registry** and installing directly!
   
 * Manual
   * Include the supplied **.dll** release in `%appdata%/VRCFaceTracking/CustomLibs`. 
