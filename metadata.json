@@ -6,11 +6,11 @@
   "DownloadUrl": "https://github.com/regzo2/VRCFaceTracking-MeowFace/releases/download/vrcft-registry/MeowFaceExtTrackingInterface.zip",
   "LastUpdated": "2023-04-20T01:08:01Z",
   "ModuleDescription": "Use the MeowFace Android app with VRCFaceTracking!",
-  "ModuleName": "MeowFace Tracking Module",
+  "ModuleName": "MeowFaceTrackingModule",
   "ModulePageUrl": "https://github.com/regzo2/VRCFaceTracking-MeowFace",
   "Rating": 0,
   "Ratings": 0,
   "RatingSum": 0,
   "UsageInstructions": "Install MeowFace app on Google Play, set network up by connecting to PC via local net, and enjoy!",
-  "Version": "1.3"
+  "Version": "1.4"
 }
