@@ -8,16 +8,16 @@ namespace MeowFaceExtTrackingInterface
 {
     public class MeowFaceData
     {
-        public long Timestamp;
-        public int Hotkey;
-        public bool FaceFound;
-        public MeowVector Rotation;
-        public MeowVector Position;
-        public MeowVector EyeLeft;
-        public MeowVector EyeRight;
+        public long Timestamp { get; set; }
+        public int Hotkey { get; set; }
+        public bool FaceFound { get; set; }
+        public MeowVector Rotation { get; set; }
+        public MeowVector Position { get; set; }
+        public MeowVector EyeLeft { get; set; }
+        public MeowVector EyeRight { get; set; }
 
         // the data is jumbled like this. we only need to use this to get the key/value pair from the json sent.
-        public MeowShape[] BlendShapes =
+        public MeowShape[] BlendShapes  { get; set; } =
         {
             new MeowShape( "jawOpen", 0.0f ),
             new MeowShape( "eyeLookOutRight", 0.0f ),
