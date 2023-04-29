@@ -8,14 +8,14 @@ namespace MeowFaceExtTrackingInterface
 {
     public struct MeowVector
     {
-        public float x;
-        public float y;
-        public float z;
+        public float x { get; set; }
+        public float y { get; set; }
+        public float z { get; set; }
     }
     public struct MeowShape 
     { 
-        public string k;
-        public float v;
+        public string k { get; set; }
+        public float v { get; set; }
 
         public MeowShape(string key, float value)
         {
