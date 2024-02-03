@@ -1,6 +1,6 @@
 # MeowFace Tracking Module
 
-> Lets [VRCFaceTracking](https://docs.vrcft.io/docs/hardware/meowface) take advantage of **MeowFace**'s tracking directly from your Android device.
+> Allows [VRCFaceTracking](https://docs.vrcft.io/docs/hardware/meowface) to take advantage of **MeowFace**'s tracking directly from your Android device.
 
 ## Installing **MeowFace Tracking Module** for **VRCFaceTracking**.
 
