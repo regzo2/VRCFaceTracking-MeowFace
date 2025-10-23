@@ -12,18 +12,26 @@ namespace MeowFaceExtTrackingInterface
         public float y { get; set; }
         public float z { get; set; }
     }
-    public struct MeowShape 
-    { 
+    public struct MeowNamedShape
+    {
         public string k { get; set; }
         public float v { get; set; }
 
-        public MeowShape(string key, float value)
+        public MeowNamedShape(string key, float value)
         {
             k = key;
             v = value;
         }
     }
+    public struct MeowShape
+    {
+        public float v { get; set; }
 
+        public MeowShape(float value)
+        {
+            v = value;
+        }
+    }
     public enum MeowShapeType
     {
         jawOpen,

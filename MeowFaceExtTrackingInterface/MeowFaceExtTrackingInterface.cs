@@ -1,7 +1,8 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using System.Text.Json;
+using System.Text;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using VRCFaceTracking;
 using VRCFaceTracking.Core.Params.Data;
 using VRCFaceTracking.Core.Params.Expressions;
@@ -54,7 +55,11 @@ namespace MeowFaceExtTrackingInterface
                 try
                 {
                     buffer = client.Receive(ref endPoint);
-                    dataBuffer = JsonSerializer.Deserialize<MeowFaceData>(buffer) ?? dataBuffer;
+                    string json = Encoding.UTF8.GetString(buffer);
+
+                    Logger.LogDebug("Received initial MeowFace JSON data: {}", json);
+
+                    dataBuffer = JsonConvert.DeserializeObject<MeowFaceData>(json) ?? dataBuffer;
                     sendData = (eyeAvailable, expressionAvailable);
                 }
                 catch (SocketException)
@@ -173,7 +178,8 @@ namespace MeowFaceExtTrackingInterface
             try
             {
                 buffer = client.Receive(ref endPoint);
-                dataBuffer = JsonSerializer.Deserialize<MeowFaceData>(buffer) ?? dataBuffer;
+                string json = Encoding.UTF8.GetString(buffer);
+                dataBuffer = JsonConvert.DeserializeObject<MeowFaceData>(json) ?? dataBuffer;
 
                 if (sendData.Item1)
                 {
