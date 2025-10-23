@@ -15,7 +15,7 @@
 
 ## Using MeowFace with VRCFaceTracking
 
-1. Download **MeowFace** from [Google Play](https://play.google.com/store/apps/details?id=com.suvidriel.meowface&hl=en_US&gl=US)
+1. Download **MeowFace** from [itch.io](https://suvidriel.itch.io/meowface/devlog/838034/meowface-moved-to-itch)
 2. Get your PC's (the computer on which VRCFaceTracking is running) [local IP address](./docs/how-to-get-your-local-ip.md)
 3. Open the **MeowFace** app and
 4. Initialize `MeowFaceExtTrackingInterface` in the **VRCFaceTracking** app.
